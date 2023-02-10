@@ -6,10 +6,10 @@
         </div>
         <div v-if="existe" class="container-pokemon">
             <div v-if="existe" class="container-caracteristicas">
-                <h1 v-if="existe">{{ pokemon.name }}</h1>
+                <router-link to="/pokemon">
+                    <h1 v-if="existe">{{ pokemon.name }}</h1>
+                </router-link>
                 <img v-if="existe" alt="" :src="pokemon.sprites.back_default">
-                <ul v-if="existe" class="lista-caracteristicas">
-                </ul>
             </div>
         </div>
         <div v-if="!existe" class="mensagem-selecione">
@@ -31,7 +31,7 @@
                 mensagem: 'AINDA NÃO ESCOLHEU O SEU POKEMON ;)',
                 statusError: null,
                 pokemon: {},
-                placeholder: 'Pesquise o seu pokemon favorito'
+                placeholder: 'Pesquise o seu pokemon favorito ID | NOME'
             }
         },
         created() {
@@ -39,24 +39,27 @@
         },
         methods: {
             inputText() {
-                if(this.text)
-                {
-                    this.mensagem = "Buscando...";
+                if(this.text) {
                     axios.get(`https://pokeapi.co/api/v2/pokemon-form/${this.text}/`)
                     .then(resp => 
                         this.pokemon = resp.data
                     )
                     .catch(erro => this.statusError = erro.response.status)
 
-                    if(this.statusError == 404)
-                    {
+                    if(this.statusError) {
                         this.existe = false
                         this.mensagem = "NÃO FOI ENCONTRADO!";
+                        this.statusError = null;
+                        this.pokemon = '';
                     }
                     else
                     {
                         this.existe = true;
                     }
+                }
+                else {
+                    this.mensagem = 'AINDA NÃO ESCOLHEU O SEU POKEMON ;)';
+                    this.existe = false;
                 }
             }
         }
@@ -154,10 +157,6 @@
             input {
                 width: 50%;
             }
-        }
-
-        .container-informations .container-pokemon .container-caracteristicas {
-            width: 50%;
         }
     }
 </style>
