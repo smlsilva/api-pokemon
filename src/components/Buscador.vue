@@ -28,6 +28,7 @@
                 existe: false,
                 mensagem: 'AINDA NÃO ESCOLHEU O SEU POKEMON ;)',
                 statusError: null,
+                success: false,
                 pokemon: {},
                 placeholder: 'Pesquise o seu pokemon favorito ID | NOME'
             }
@@ -43,11 +44,11 @@
                         this.pokemon = resp.data
                     )
                     .catch(erro => this.statusError = erro.response.status)
+                    .finally(() => this.success = this.statusError == 404)
 
-                    if(this.statusError) {
+                    if(this.success) {
                         this.existe = false
                         this.mensagem = "NÃO FOI ENCONTRADO!";
-                        this.statusError = null;
                         this.pokemon = '';
                     }
                     else
@@ -151,10 +152,12 @@
     }
 
     @media screen and (max-width: 768px) {
-        .container-buscador {
-            input {
-                width: 50%;
-            }
+        .container-informations .container-buscador input {
+            width: 50%;
+        }
+        
+        .container-informations .container-pokemon .container-caracteristicas {
+            width: 50%;
         }
     }
 </style>
