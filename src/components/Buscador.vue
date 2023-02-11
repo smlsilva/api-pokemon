@@ -6,9 +6,7 @@
         </div>
         <div v-if="existe" class="container-pokemon">
             <div v-if="existe" class="container-caracteristicas">
-                <router-link to="/pokemon">
-                    <h1 v-if="existe">{{ pokemon.name }}</h1>
-                </router-link>
+                <h1 v-if="existe">{{ pokemon.name }}</h1>
                 <img v-if="existe" alt="" :src="pokemon.sprites.back_default">
             </div>
         </div>
